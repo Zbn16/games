@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Search</title>
+	<style>
+		:root {
+			color-scheme: light;
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+		}
+
+		* { box-sizing: border-box; }
+
+		html, body { height: 100%; }
+
+		body {
+			margin: 0;
+			overflow: hidden;
+			background: #eef1f4;
+			color: #17191c;
+		}
+
+		.background,
+		.background-media {
+			position: fixed;
+			inset: 0;
+			width: 100%;
+			height: 100%;
+		}
+
+		.background {
+			z-index: -2;
+			background: #eef1f4;
+		}
+
+		.background-media {
+			display: none;
+			object-fit: cover;
+			z-index: -1;
+		}
+
+		.background-media.visible { display: block; }
+
+		.scrim {
+			position: fixed;
+			inset: 0;
+			z-index: 0;
+			pointer-events: none;
+			background: rgba(255, 255, 255, .08);
+		}
+
+		.interface {
+			min-height: 100%;
+			display: grid;
+			place-items: center;
+			padding: 24px;
+			transition: opacity .2s ease, visibility .2s ease;
+		}
+
+		.upload-label.hidden {
+			opacity: 0;
+			visibility: hidden;
+			pointer-events: none;
+		}
+
+		.search-form {
+			width: min(680px, 100%);
+			position: relative;
+		}
+
+		.search-input {
+			width: 100%;
+			height: 62px;
+			padding: 0 58px 0 24px;
+			border: 1px solid rgba(0, 0, 0, .1);
+			border-radius: 14px;
+			outline: none;
+			background: rgba(255, 255, 255, .96);
+			box-shadow: 0 16px 45px rgba(20, 29, 40, .14), 0 2px 6px rgba(20, 29, 40, .08);
+			color: #17191c;
+			font: inherit;
+			font-size: 18px;
+			transition: box-shadow .2s ease, border-color .2s ease;
+		}
+
+		.search-input::placeholder { color: #8a9097; }
+		.search-input:focus {
+			border-color: rgba(0, 0, 0, .28);
+			box-shadow: 0 18px 50px rgba(20, 29, 40, .18), 0 0 0 4px rgba(255, 255, 255, .38);
+		}
+
+		.search-submit {
+			position: absolute;
+			right: 10px;
+			top: 10px;
+			width: 42px;
+			height: 42px;
+			display: grid;
+			place-items: center;
+			border: 0;
+			border-radius: 10px;
+			background: transparent;
+			color: #6c737c;
+			cursor: pointer;
+		}
+
+		.search-submit:hover { background: #f0f2f4; color: #17191c; }
+		.search-submit svg { width: 20px; height: 20px; }
+
+		.upload-label {
+			position: fixed;
+			right: 24px;
+			bottom: 24px;
+			z-index: 2;
+			display: inline-flex;
+			align-items: center;
+			gap: 9px;
+			min-height: 44px;
+			padding: 0 16px;
+			border: 1px solid rgba(0, 0, 0, .08);
+			border-radius: 11px;
+			background: rgba(255, 255, 255, .94);
+			box-shadow: 0 8px 24px rgba(20, 29, 40, .12);
+			color: #30343a;
+			cursor: pointer;
+			font-size: 14px;
+			font-weight: 600;
+			transition: transform .2s ease, background .2s ease;
+		}
+
+		.upload-label:hover { transform: translateY(-2px); background: #fff; }
+		.upload-label svg { width: 17px; height: 17px; }
+		#background-upload { display: none; }
+
+		.status {
+			position: fixed;
+			left: 24px;
+			bottom: 28px;
+			z-index: 2;
+			margin: 0;
+			color: rgba(23, 25, 28, .6);
+			font-size: 12px;
+			opacity: 0;
+			transition: opacity .2s ease;
+		}
+
+		.status.show { opacity: 1; }
+
+		@media (max-width: 520px) {
+			.interface { padding: 18px; }
+			.upload-label { right: 18px; bottom: 18px; }
+			.status { left: 18px; bottom: 76px; }
+		}
+	</style>
+</head>
+<body>
+	<div class="background" aria-hidden="true"></div>
+	<img class="background-media" id="background-image" alt="">
+	<video class="background-media" id="background-video" autoplay muted loop playsinline></video>
+	<div class="scrim" aria-hidden="true"></div>
+
+	<main class="interface" id="interface">
+		<form class="search-form" id="search-form" role="search">
+			<input class="search-input" id="search-input" type="search" placeholder="Search the web" autocomplete="off" autofocus>
+			<button class="search-submit" type="submit" aria-label="Search">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+			</button>
+		</form>
+	</main>
+
+	<label class="upload-label" for="background-upload">
+		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"></path><path d="m7 8 5-5 5 5"></path><path d="M5 17v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2"></path></svg>
+		Change background
+	</label>
+	<input id="background-upload" type="file" accept="image/*,video/*">
+	<p class="status" id="status" role="status"></p>
+
+	<script>
+		const searchForm = document.getElementById('search-form');
+		const searchInput = document.getElementById('search-input');
+		const uploadInput = document.getElementById('background-upload');
+		const uploadLabel = document.querySelector('.upload-label');
+		const imageElement = document.getElementById('background-image');
+		const videoElement = document.getElementById('background-video');
+		const statusElement = document.getElementById('status');
+		const databaseRequest = indexedDB.open('simple-search-background', 1);
+
+		databaseRequest.onupgradeneeded = () => {
+			databaseRequest.result.createObjectStore('settings');
+		};
+
+		databaseRequest.onsuccess = () => {
+			const transaction = databaseRequest.result.transaction('settings', 'readonly');
+			const request = transaction.objectStore('settings').get('background');
+			request.onsuccess = () => {
+				if (request.result) showBackground(request.result);
+			};
+		};
+
+		function showBackground(file) {
+			const url = URL.createObjectURL(file);
+			imageElement.classList.remove('visible');
+			videoElement.classList.remove('visible');
+			if (file.type.startsWith('video/')) {
+				videoElement.src = url;
+				videoElement.classList.add('visible');
+				videoElement.play().catch(() => {});
+			} else {
+				imageElement.src = url;
+				imageElement.classList.add('visible');
+			}
+		}
+
+		uploadInput.addEventListener('change', () => {
+			const file = uploadInput.files[0];
+			if (!file) return;
+			const transaction = databaseRequest.result.transaction('settings', 'readwrite');
+			transaction.objectStore('settings').put(file, 'background');
+			showBackground(file);
+			statusElement.textContent = 'Background saved';
+			statusElement.classList.add('show');
+			window.setTimeout(() => statusElement.classList.remove('show'), 1800);
+		});
+
+		searchForm.addEventListener('submit', (event) => {
+			event.preventDefault();
+			const query = searchInput.value.trim();
+			if (query) window.location.href = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+		});
+
+		document.addEventListener('keydown', (event) => {
+			if (event.key.toLowerCase() !== 'h' || event.target.matches('input, textarea')) return;
+			uploadLabel.classList.toggle('hidden');
+		});
+	</script>
+</body>
+</html>
