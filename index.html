@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOPA</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Raleway:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #000;
+            color: #620000;
+            font-family: 'Cal Sans', sans-serif;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            user-select: none;
+            transition: background-color 0.6s, color 0.6s; /* Transition for theme change */
+        }
+ 
+        /* Dark Theme Styles */
+        .dark-theme {
+            background-color: #1a1a1a; /* Darker background for dark mode */
+            color: #e0e0e0; /* Lighter text for contrast */
+        }
+ 
+        /* Header Styles */
+        .header {
+            margin-bottom: 10px;
+        }
+ 
+        .header h1 {
+            font-size: 4.5em;
+            color: #620000;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            text-shadow: 5px 5px 0 rgba(109, 2, 2, 0.7);
+            animation: fadeIn 1s ease-in forwards;
+        }
+ 
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+ 
+            to {
+                opacity: 1;
+            }
+        }
+ 
+        /* Quote Styles */
+        .quote {
+            font-size: 1.8em;
+            color: #620000;
+            margin-top: 20px;
+            margin-bottom: 30px;
+            border: 2px solid #620000;
+            padding: 20px;
+            border-radius: 6.5px;
+            background: rgba(20, 20, 20, 0.85);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+ 
+        .quote:hover {
+            transform: scale(1.03);
+            box-shadow: 5px 5px 0 #6c0000;
+        }
+ 
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+ 
+        .button {
+            background-color: #000;
+            color: #6c0000;
+            border: 2px solid #6c0000;
+            border-radius: 6.5px;
+            padding: 12px 30px;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin: 5px;
+            cursor: pointer;
+            transition: background 0.6s, transform 0.6s, box-shadow 0.6s;
+        }
+ 
+        .button:hover {
+            background-color: #6c0000;
+            color: #000000;
+            transform: scale(1.05);
+            box-shadow: 5px 5px 0 #6c0000;
+        }
+ 
+        .icons-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            max-width: 900px;
+            margin: 30px 0;
+        }
+ 
+        .icon-box {
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+ 
+        .icon-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 5px 5px 0 #6c0000;
+        }
+ 
+        .icon {
+            width: 64px;
+            height: 64px;
+        }
+ 
+        .icon-label {
+            margin-top: 8px;
+            font-weight: 500;
+            color: #6c0000;
+        }
+ 
+        .announcement {
+            color: #6c0000;
+            font-size: 1.5em;
+            margin-top: 20px;
+            border: 1px solid #6c0000;
+            padding: 10px;
+            border-radius: 10px;
+            animation: pulse 2s infinite alternate;
+        }
+ 
+        @keyframes pulse {
+            from {
+                transform: scale(1);
+            }
+ 
+            to {
+                transform: scale(1.05);
+            }
+        }
+    </style>
+</head>
+ 
+<body>
+    <div class="header">
+        <h1>DOPA</h1>
+    </div>
+ 
+    <div class="quote" id="quoteDisplay" aria-live="polite">Welcome to DOPA, your gateway to luxury!</div>
+ 
+    <div class="icons-container">
+        <div class="icon-box" onclick="window.location.href='/games'" aria-label="Go to Games">
+            <img class="icon" src="https://static-00.iconduck.com/assets.00/console-controller-icon-2048x2048-pmmusn7m.png" alt="Games">
+            <div class="icon-label">Games</div>
+        </div>
+        <div class="icon-box" onclick="window.location.href='apps.html'" aria-label="Go to Apps">
+            <img class="icon" src="https://cdn-icons-png.freepik.com/256/9101/9101010.png?semt=ais_incoming" alt="Apps">
+            <div class="icon-label">Apps</div>
+        </div>
+        <div class="icon-box" onclick="window.location.href='https://unblocked.my.canva.site/'" aria-label="Go to Exploits">
+            <img class="icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0_6HUhLshuftA_sDchc5pEGqTBPa41EO6Xw&s" alt="Exploits">
+            <div class="icon-label">Exploits</div>
+        </div>
+        <div class="icon-box" onclick="window.location.href='movies.html'" aria-label="Go to Movies">
+            <img class="icon" src="https://i.pinimg.com/736x/ea/8d/11/ea8d11f1ffc6355b8a440106ce61d0f3.jpg" alt="Movies">
+            <div class="icon-label">Movies</div>
+        </div>
+        <div class="icon-box" onclick="window.location.href='settings.html'" aria-label="Go to Settings">
+            <img class="icon" src="https://img.icons8.com/ios7/512/FFFFFF/settings.png" alt="Settings">
+            <div class="icon-label">Settings</div>
+        </div>
+    </div>
+ 
+    <div class="buttons-container">
+        <button class="button" onclick="window.location.href='/credits.html'" aria-label="See Credits">Credits</button>
+        <button class="button" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle dark mode">Switch to Light Mode</button>
+    </div>
+ 
+    <p class="announcement">Announcement: Z, say some here!!1!</p>
+ 
+    <script>
+        // Quotes Array and Current Index
+        const quotes = [
+            "DOPA, origin by Z, website made by founder and owner of universal!",
+            "This site use to only be HTML.",
+            "Ton's of games!",
+            "Totally very educational website...",
+            "website still WIP!",
+            "Gold and black theme",
+            "why aren't you working?"
+        ];
+ 
+        let quoteIndex = 0;
+        let currentQuote = '';
+        let letterIndex = 0;
+        const quoteDisplay = document.getElementById('quoteDisplay');
+ 
+        // Typewriting Effect
+        function typeQuote() {
+            if (letterIndex < quotes[quoteIndex].length) {
+                currentQuote += quotes[quoteIndex].charAt(letterIndex);
+                quoteDisplay.textContent = currentQuote;
+                letterIndex++;
+                setTimeout(typeQuote, 100);
+            } else {
+                setTimeout(backspaceQuote, 1500);
+            }
+        }
+ 
+        function backspaceQuote() {
+            if (letterIndex > 0) {
+                currentQuote = currentQuote.slice(0, -1);
+                quoteDisplay.textContent = currentQuote;
+                letterIndex--;
+                setTimeout(backspaceQuote, 50);
+            } else {
+                quoteIndex = (quoteIndex + 1) % quotes.length;
+                setTimeout(typeQuote, 700);
+            }
+        }
+ 
+        // Start Quote Animation
+        typeQuote();
+ 
+        // Theme Toggle Function
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            const button = document.getElementById('themeToggle');
+            button.textContent = document.body.classList.contains('dark-theme') ? 'Switch to Dark Mode' : 'Switch to Light Mode';
+        }
+    </script>
+</body>
+ 
+</html>
